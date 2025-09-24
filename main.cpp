@@ -1,4 +1,4 @@
-#include <TXLib.h>
+
 #include <stdio.h>
 #include <typeinfo>
 
@@ -8,12 +8,25 @@
 
 int main(void) {
     struct stack stk = {};
+    struct info stackInfo = {};
     struct info dumpInfo = {};
-    STACK_CTOR(stk, 5);
+    STACK_CTOR(stk, stackInfo, 5);
+
 
     if (stackPush(&stk, 10, stdout, &dumpInfo))
+        return 0;
+    if (stackPush(&stk, 20, stdout, &dumpInfo))
+        return 0;
+    if (stackPush(&stk, 30, stdout, &dumpInfo))
+        return 0;
 
-    stackPop (&stk, stdout, &dumpInfo);
+    if (stackPop (&stk, stdout, &dumpInfo))
+        return 0;
+    if (stackPop (&stk, stdout, &dumpInfo))
+        return 0;
+    stk.size = -3;
+    if (stackPop (&stk, stdout, &dumpInfo))
+        return 0;
 
 
 /*

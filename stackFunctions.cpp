@@ -1,3 +1,4 @@
+#include <TXLib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -7,19 +8,25 @@
 #include "stackFunctions.h"
 #include "structsAndEnums.h"
 
-int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack) {
+const int POISON = 0xDEADBABE;
+
+int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct info creationInfo) {
     assert(stack);
     assert(capacity > 0);
 
     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+    for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+        stack->data[numOfElement] = POISON;
+
     stack->size = 0;
     stack->capacity = capacity;
-
-    stack->stackInfo.nameOfFunct = __func__;
-    stack->stackInfo.nameOfFile = __FILE__;
-    stack->stackInfo.numOfLine = __LINE__;
     stack->nameOfStack = nameOfStack;
     stack->errorCode = noErrors;
+    stack->nameOfType = txDemangle(typeid((stack->data)[0]).name()).c_str();
+
+    stack->stackInfo.nameOfFunct = creationInfo.nameOfFunct;
+    stack->stackInfo.nameOfFile = creationInfo.nameOfFile;
+    stack->stackInfo.numOfLine = creationInfo.numOfLine;
 
     return stack->errorCode;
 }
@@ -38,6 +45,10 @@ int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* du
 int fprintfElement (FILE* file, stackElement_t element) {
     assert(file);
 
+    if (element == POISON) {
+        fprintf(file, "%X\n", (int)element);
+        return 0;
+    }
     if (typeid(stackElement_t) == typeid(int)) {
         fprintf(file, "%d\n", (int)element);
         return 0;
@@ -70,6 +81,7 @@ int stackPop (stack_t* stack, FILE* file, struct info* dumpInfo) {
         stack->errorCode = badElementType;
         stackDump(stack, file, *dumpInfo);
     }
+    stack->data[stack->size] = POISON;
 
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
@@ -91,7 +103,7 @@ int stackVerifier (stack_t* stack) {
     if (stack->capacity < 0)
         stack->errorCode |= badCapacity;
 
-return stack->errorCode;
+    return stack->errorCode;
 }
 
 void stackDump (stack_t* stack, FILE* file, struct info dumpInfo) {
@@ -120,10 +132,15 @@ void stackDump (stack_t* stack, FILE* file, struct info dumpInfo) {
 
     fprintf(file, "     {\n");
     for(ssize_t elementNum = 0; elementNum < stack->capacity; elementNum++) {
-        if(elementNum < stack->size)
+        if(elementNum < stack->size) {
             fprintf(file, "         *");
-        fprintf(file, "[%d] = ", elementNum);
-        fprintfElement(file, (stack->data)[elementNum]);
+            fprintf(file, "[%d] = ", elementNum);
+            fprintfElement(file, (stack->data)[elementNum]);
+        }
+        else {
+            fprintf(file, "          [%d] = ", elementNum);
+            fprintfElement(file, (stack->data)[elementNum]);
+        }
     }
 
     fprintf(file, "     }\n");

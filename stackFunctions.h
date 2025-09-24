@@ -3,17 +3,22 @@
 
 #include "structsAndEnums.h"
 
-#define STACK_CTOR(stackName, capacity) stackCtor(&stackName, capacity, #stackName)
+#define STACK_CTOR(stackName, stackInfoName, capacity)\
+    stackInfoName.nameOfFile = __FILE__;\
+    stackInfoName.nameOfFunct = __func__;\
+    stackInfoName.numOfLine = __LINE__;\
+    stackCtor(&stackName, capacity, #stackName, stackInfoName);\
 
 #define STACK_ERRORS_CHECK(stackAddress, filePtr, dumpInfoAddress) \
         dumpInfoAddress->nameOfFile = __FILE__; \
         dumpInfoAddress->nameOfFunct = __func__; \
         dumpInfoAddress->numOfLine = __LINE__;\
-    if(stackVerifier(stackAddress)) \
-        stackDump(stackAddress, filePtr, *dumpInfoAddress)\
-    return stackAddress->errorCode\
+    if(stackVerifier(stackAddress)) { \
+        stackDump(stackAddress, filePtr, *dumpInfoAddress);\
+        return stackAddress->errorCode;\
+    }\
 
-int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack);
+int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct info creationInfo);
 
 int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* dumpInfo);
 

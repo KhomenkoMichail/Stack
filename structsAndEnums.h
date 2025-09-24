@@ -22,7 +22,7 @@ struct stack {
     stackElement_t* data;
     ssize_t size;
     ssize_t capacity;
-    char* nameOfType;
+    const char* nameOfType;
     const char* nameOfStack;
     int errorCode;
     struct info stackInfo;
