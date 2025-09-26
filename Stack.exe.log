@@ -1,0 +1,768 @@
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (22, 0x00): SIGABRT: Аварийное завершение программы, вызвана функция abort(). 
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x1AD4 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004121EC in C:\Users\Admin\Desktop\Stack\Stack.exe: (anonymous namespace)::TX::_txOnSignal() at c:/users/admin/downloads/codeblocks/mingw/include/txlib.h:11173
+# 1 0x76338F03 in C:\WINDOWS\System32\msvcrt.dll: raise()
+# 2 0x7633D3CB in C:\WINDOWS\System32\msvcrt.dll: abort()
+# 3 0x76339D47 in C:\WINDOWS\System32\msvcrt.dll: assert()
+
+# 4 0x0042DB46 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:15:
+
+     13: int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct info creationInfo) {
+     14:     assert(stack);
+=>   15:     assert(capacity > 0);
+     16: 
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+
+# 5 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000000000000000000000000000000000000000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 25 2025 00:28:35, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 25 2025 00:29:34
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 19. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x3E30 (Main), GetLastError(): 8 (Недостаточно ресурсов памяти для обработки этой команды). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:19:
+
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     18:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   19:         stack->data[numOfElement] = POISON;
+     20: 
+     21:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:15:58, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:16:02
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 19. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x3E30 (Main), GetLastError(): 8 (Недостаточно ресурсов памяти для обработки этой команды). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:19:
+
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     18:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   19:         stack->data[numOfElement] = POISON;
+     20: 
+     21:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:15:58, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:16:02
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (22, 0x00): SIGABRT: Аварийное завершение программы, вызвана функция abort(). 
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x41F0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x00412218 in C:\Users\Admin\Desktop\Stack\Stack.exe: (anonymous namespace)::TX::_txOnSignal() at c:/users/admin/downloads/codeblocks/mingw/include/txlib.h:11173
+# 1 0x771B8F03 in C:\WINDOWS\System32\msvcrt.dll: raise()
+# 2 0x771BD3CB in C:\WINDOWS\System32\msvcrt.dll: abort()
+# 3 0x771B9D47 in C:\WINDOWS\System32\msvcrt.dll: assert()
+
+# 4 0x0042DB72 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:15:
+
+     13: int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct info creationInfo) {
+     14:     assert(stack);
+=>   15:     assert(capacity > 0);
+     16: 
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+
+# 5 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 0);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:42:54, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:43:00
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 19. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x23D0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:19:
+
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     18:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   19:         stack->data[numOfElement] = POISON;
+     20: 
+     21:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 10000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:45:59, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:46:52
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 19. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x23D0 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:19:
+
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     18:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   19:         stack->data[numOfElement] = POISON;
+     20: 
+     21:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 10000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:45:59, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:46:52
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 19. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x2B68 (Main), GetLastError(): 8 (Недостаточно ресурсов памяти для обработки этой команды). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:19:
+
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     18:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   19:         stack->data[numOfElement] = POISON;
+     20: 
+     21:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:45:59, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:47:03
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 19. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x2B68 (Main), GetLastError(): 8 (Недостаточно ресурсов памяти для обработки этой команды). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:19:
+
+     17:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     18:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   19:         stack->data[numOfElement] = POISON;
+     20: 
+     21:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:45:59, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:47:03
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 20. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x3F70 (Main), GetLastError(): 8 (Недостаточно ресурсов памяти для обработки этой команды). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:20:
+
+     18:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     19:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   20:         stack->data[numOfElement] = POISON;
+     21: 
+     22:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:51:13, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:51:17
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042DBA2 в функции stackCtor() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 20. Попытка записать данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x3F70 (Main), GetLastError(): 8 (Недостаточно ресурсов памяти для обработки этой команды). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042DBA2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackCtor() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:20:
+
+     18:     stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+     19:     for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+=>   20:         stack->data[numOfElement] = POISON;
+     21: 
+     22:     stack->size = 0;
+
+# 1 0x00401470 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:13:
+
+     11:     struct info stackInfo = {};
+     12:     struct info dumpInfo = {};
+=>   13:     STACK_CTOR(stk, stackInfo, 1000000000);
+     14: 
+     15: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 09:51:13, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 09:51:17
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042E3E5 в функции stackDump() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 160. Попытка прочесть данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x36C8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042E3E5 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackDump() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:160:
+
+    158:         else {
+    159:             fprintf(file, "          [%d] = ", elementNum);
+=>  160:             fprintfElement(file, (stack->data)[elementNum]);
+    161:         }
+    162:     }
+
+# 1 0x0042DCB2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackPush() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:40:
+
+     38: 
+     39: int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* dumpInfo) {
+=>   40:     STACK_ERRORS_CHECK(stack, file, dumpInfo);
+     41: 
+     42:     stack->data[stack->size] = value;
+
+# 2 0x00401498 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:16:
+
+     14: 
+     15: 
+=>   16:     if (stackPush(&stk, 10, stdout, &dumpInfo))
+     17:         return 1;
+     18:     if (stackPush(&stk, 100, stdout, &dumpInfo))
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in int stackCtor(stack_t*, ssize_t, const char*, info) at stackFunctions.cpp:21:
+
+     19:     stack->nameOfStack = nameOfStack;
+     20:     stack->errorCode = noErrors;
+=>   21:     stack->nameOfType = txDemangle(typeid((stack->data)[0]).name()).c_str();
+     22: 
+     23:     stack->stackInfo.nameOfFunct = creationInfo.nameOfFunct;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 10:56:29, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 10:56:33
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042E3E5 в функции stackDump() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 160. Попытка прочесть данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x36C8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042E3E5 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackDump() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:160:
+
+    158:         else {
+    159:             fprintf(file, "          [%d] = ", elementNum);
+=>  160:             fprintfElement(file, (stack->data)[elementNum]);
+    161:         }
+    162:     }
+
+# 1 0x0042DCB2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackPush() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:40:
+
+     38: 
+     39: int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* dumpInfo) {
+=>   40:     STACK_ERRORS_CHECK(stack, file, dumpInfo);
+     41: 
+     42:     stack->data[stack->size] = value;
+
+# 2 0x00401498 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:16:
+
+     14: 
+     15: 
+=>   16:     if (stackPush(&stk, 10, stdout, &dumpInfo))
+     17:         return 1;
+     18:     if (stackPush(&stk, 100, stdout, &dumpInfo))
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in int stackCtor(stack_t*, ssize_t, const char*, info) at stackFunctions.cpp:21:
+
+     19:     stack->nameOfStack = nameOfStack;
+     20:     stack->errorCode = noErrors;
+=>   21:     stack->nameOfType = txDemangle(typeid((stack->data)[0]).name()).c_str();
+     22: 
+     23:     stack->stackInfo.nameOfFunct = creationInfo.nameOfFunct;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 10:56:29, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 10:56:33
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042E3E5 в функции stackDump() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 160. Попытка прочесть данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x31C8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042E3E5 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackDump() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:160:
+
+    158:         else {
+    159:             fprintf(file, "          [%d] = ", elementNum);
+=>  160:             fprintfElement(file, (stack->data)[elementNum]);
+    161:         }
+    162:     }
+
+# 1 0x0042DCB2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackPush() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:40:
+
+     38: 
+     39: int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* dumpInfo) {
+=>   40:     STACK_ERRORS_CHECK(stack, file, dumpInfo);
+     41: 
+     42:     stack->data[stack->size] = value;
+
+# 2 0x00401498 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:16:
+
+     14: 
+     15: 
+=>   16:     if (stackPush(&stk, 10, stdout, &dumpInfo))
+     17:         return 1;
+     18:     if (stackPush(&stk, 100, stdout, &dumpInfo))
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in int stackCtor(stack_t*, ssize_t, const char*, info) at stackFunctions.cpp:21:
+
+     19:     stack->nameOfStack = nameOfStack;
+     20:     stack->errorCode = noErrors;
+=>   21:     stack->nameOfType = txDemangle(typeid((stack->data)[0]).name()).c_str();
+     22: 
+     23:     stack->stackInfo.nameOfFunct = creationInfo.nameOfFunct;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 10:58:52, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 10:59:00
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\Users\Admin\Desktop\Stack\Stack.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставьте ассерты! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при выполнении кода по адресу 0x0042E3E5 в функции stackDump() в файле C:/Users/Admin/Desktop/Stack/stackFunctions.cpp на строке 160. Попытка прочесть данные по адресу NULL в модуле C:\Users\Admin\Desktop\Stack\Stack.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощью функции signal() вы можете сами обработать эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400], Instance: 0x005081DC (32-bit), Flags: Cmdre0, Thread: 0x31C8 (Main). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042E3E5 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackDump() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:160:
+
+    158:         else {
+    159:             fprintf(file, "          [%d] = ", elementNum);
+=>  160:             fprintfElement(file, (stack->data)[elementNum]);
+    161:         }
+    162:     }
+
+# 1 0x0042DCB2 in C:\Users\Admin\Desktop\Stack\Stack.exe: stackPush() at C:/Users/Admin/Desktop/Stack/stackFunctions.cpp:40:
+
+     38: 
+     39: int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* dumpInfo) {
+=>   40:     STACK_ERRORS_CHECK(stack, file, dumpInfo);
+     41: 
+     42:     stack->data[stack->size] = value;
+
+# 2 0x00401498 in C:\Users\Admin\Desktop\Stack\Stack.exe: main() at C:/Users/Admin/Desktop/Stack/main.cpp:16:
+
+     14: 
+     15: 
+=>   16:     if (stackPush(&stk, 10, stdout, &dumpInfo))
+     17:         return 1;
+     18:     if (stackPush(&stk, 100, stdout, &dumpInfo))
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in int stackCtor(stack_t*, ssize_t, const char*, info) at stackFunctions.cpp:21:
+
+     19:     stack->nameOfStack = nameOfStack;
+     20:     stack->errorCode = noErrors;
+=>   21:     stack->nameOfType = txDemangle(typeid((stack->data)[0]).name()).c_str();
+     22: 
+     23:     stack->stackInfo.nameOfFunct = creationInfo.nameOfFunct;
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 174, Date: 2025-08-03 17:59:06 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	c:\users\admin\downloads\codeblocks\mingw\include\txlib.h
+Compiled:	Sep 26 2025 10:58:52, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Sep 26 2025 10:59:00
+
+Run file:	C:\Users\Admin\Desktop\Stack\Stack.exe
+Directory:	C:\Users\Admin\Desktop\Stack
+
+--------------------------------------------------

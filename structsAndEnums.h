@@ -10,6 +10,7 @@ enum stackErr_t {
     badSize = 0b100,
     badCapacity = 0b1000,
     badElementType = 0b10000,
+    badRealloc = 0b100000,
 };
 
 struct info {
