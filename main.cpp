@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <typeinfo>
 
@@ -9,30 +8,17 @@ int main(void) {
     struct stack stk = {};
     struct info stackInfo = {};
     struct info dumpInfo = {};
-    STACK_CTOR(stk, stackInfo, 4);
 
+    FILE* logFile = fopen("writeDump.log", "w");
 
-    if (stackPush(&stk, 10, stdout, &dumpInfo))
-        return 1;
-    if (stackPush(&stk, 20, stdout, &dumpInfo))
-        return 1;
-    if (stackPush(&stk, 30, stdout, &dumpInfo))
-        return 1;
+    int x = 0;
 
-    stk.size = -2;
+    STACK_CTOR(stk, stackInfo, 2);
+    STACK_PUSH(&stk, 10, logFile, &dumpInfo);
 
-    fprintfElement(stdout, stackPop (&stk, stdout, &dumpInfo));
-    if (stk.errorCode)
-        return 1;
-    fprintfElement(stdout, stackPop (&stk, stdout, &dumpInfo));
-    if (stk.errorCode)
-        return 1;
+    STACK_POP(&stk, &x, logFile, &dumpInfo);
 
-    fprintfElement(stdout, stackPop (&stk, stdout, &dumpInfo));
-    if (stk.errorCode)
-        return 1;
-    if (stackDtor(&stk, stdout, &dumpInfo))
-        return 1;
+    printf("x = %d\n", x);
 
     return 0;
 }

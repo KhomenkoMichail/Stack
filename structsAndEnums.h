@@ -11,6 +11,9 @@ enum stackErr_t {
     badCapacity = 0b1000,
     badElementType = 0b10000,
     badRealloc = 0b100000,
+    noElementsForPop = 0b1000000,
+    deadFirstCanary = 0b10000000,
+    deadSecondCanary = 0b100000000,
 };
 
 struct info {

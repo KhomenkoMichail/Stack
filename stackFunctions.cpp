@@ -3,16 +3,24 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <typeinfo>
+#include <errno.h>
 
 
 #include "stackFunctions.h"
 #include "structsAndEnums.h"
 
+#define CANARY_PROTECTION
+
 const stackElement_t POISON = 0xBADBABE;
 const int MAX_CAPACITY = 100000000;
 
+#ifdef CANARY_PROTECTION
+    const int CANARY = 0xBEEFFACE;
+#endif
+
 int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct info creationInfo) {
-    assert(stack);
+    if (stackPtrIsNull (stack, stdout))
+        return badStackPtr;
 
     stack->size = 0;
     stack->capacity = capacity;
@@ -29,34 +37,74 @@ int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct
         return stack->errorCode;
     }
 
-    stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
-    for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
-        stack->data[numOfElement] = POISON;
+    #ifdef CANARY_PROTECTION
+        stack->data = (stackElement_t*)calloc((capacity + 2), sizeof(stackElement_t));
+        stack->data[0] = CANARY;
+        for(ssize_t numOfElement = 1; numOfElement < capacity - 1; numOfElement++)
+            stack->data[numOfElement] = POISON;
+        stack->data[capacity - 1] = CANARY;
+    #endif
+
+    #ifndef CANARY_PROTECTION
+        stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
+        for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
+            stack->data[numOfElement] = POISON;
+    #endif
 
     return stack->errorCode;
 }
 
 int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* dumpInfo) {
+    assert(file);
+    assert(dumpInfo);
+
+    if (stackPtrIsNull (stack, file))
+        return badStackPtr;
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
-    stack->data[stack->size] = value;
-    stack->size++;
+    #ifndef CANARY_PROTECTION
+        stack->data[stack->size] = value;
+        stack->size++;
 
-    if (stack->size == stack->capacity) {
-        stack->capacity *= 2;
-        stackElement_t* testBuffer = (stackElement_t*)realloc(stack->data, stack->capacity);
+        if (stack->size == stack->capacity) {
+            stack->capacity *= 2;
+            stackElement_t* testBuffer = (stackElement_t*)realloc(stack->data, stack->capacity);
 
-        if (testBuffer == NULL)
-            stack->errorCode = badRealloc;
+            if (testBuffer == NULL)
+                stack->errorCode = badRealloc;
 
-        else {
-            free(stack->data);
-            stack->data = testBuffer;
-            stack->data[stack->size - 1] = value;
-            for(ssize_t numOfElement = stack->size; numOfElement < stack->capacity; numOfElement++)
-                stack->data[numOfElement] = POISON;
+            else {
+                free(stack->data);
+                stack->data = testBuffer;
+                stack->data[stack->size - 1] = value;
+                for(ssize_t numOfElement = stack->size; numOfElement < stack->capacity; numOfElement++)
+                    stack->data[numOfElement] = POISON;
+            }
         }
-    }
+    #endif
+
+    #ifdef CANARY_PROTECTION
+        stack->data[stack->size + 1] = value;
+        stack->size++;
+
+        if ((stack->size + 1) == stack->capacity) {
+            stack->capacity *= 2;
+            stackElement_t* testBuffer = (stackElement_t*)realloc(stack->data, (stack->capacity + 2));
+
+            if (testBuffer == NULL)
+                stack->errorCode = badRealloc;
+
+            else {
+                free(stack->data);
+                stack->data = testBuffer;
+                stack->data[stack->size] = value;
+                for(ssize_t numOfElement = (stack->size + 1); numOfElement < stack->capacity; numOfElement++)
+                    stack->data[numOfElement] = POISON;
+                stack->data[stack->capacity + 1] = CANARY;
+            }
+        }
+    #endif
+
 
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
@@ -65,6 +113,13 @@ int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* du
 
 int fprintfElement (FILE* file, stackElement_t element) {
     assert(file);
+
+    #ifdef  CANARY_PROTECTION
+        if (element == CANARY) {
+            fprintf(file, "\"%X\" (CANARY)\n", (int)element);
+            return 0;
+        }
+    #endif
 
     if (element == POISON) {
         fprintf(file, "\"%X\" (POISON)\n", (int)element);
@@ -94,23 +149,49 @@ int fprintfElement (FILE* file, stackElement_t element) {
     return 1;
 }
 
-stackElement_t stackPop (stack_t* stack, FILE* file, struct info* dumpInfo) {
+int stackPop (stack_t* stack, stackElement_t* ptrToVariable, FILE* file, struct info* dumpInfo) {
+    assert(ptrToVariable);
+    assert(file);
+    assert(dumpInfo);
+
+    if (stackPtrIsNull (stack, file))
+        return badStackPtr;
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
-    stack->size--;
-    stackElement_t element = stack->data[stack->size];
-    stack->data[stack->size] = POISON;
+    #ifndef CANARY_PROTECTION
+        if (stack->size == 0) {
+            stack->errorCode |= noElementsForPop;
+            stackDump(stack, file, *dumpInfo);
+            stackDump(stack, stdout, *dumpInfo);
+            return stack->errorCode;
+        }
+
+        stack->size--;
+        *ptrToVariable = stack->data[stack->size];
+        stack->data[stack->size] = POISON;
+    #endif
+
+    #ifdef CANARY_PROTECTION
+        if (stack->size == 1) {
+            stack->errorCode |= noElementsForPop;
+            stackDump(stack, file, *dumpInfo);
+            stackDump(stack, stdout, *dumpInfo);
+            return stack->errorCode;
+        }
+
+        stack->size--;
+        *ptrToVariable = stack->data[stack->size + 1];
+        stack->data[stack->size + 1] = POISON;
+    #endif
 
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
-    return element;
+    return stack->errorCode;
 }
 
 int stackVerifier (stack_t* stack) {
-    if (stack == NULL) {
-        stack->errorCode |= badStackPtr;
-        return stack->errorCode;
-    }
+    if (stackPtrIsNull (stack, stdout))
+        return badStackPtr;
 
     if (stack->data == NULL)
         stack->errorCode |= badDataPtr;
@@ -121,13 +202,24 @@ int stackVerifier (stack_t* stack) {
     if ((stack->capacity <= 0) || (stack->capacity > MAX_CAPACITY))
         stack->errorCode |= badCapacity;
 
+    #ifdef CANARY_PROTECTION
+        if (stack->data[0] != CANARY)
+            stack->errorCode |= deadFirstCanary;
+
+        if (stack->data[stack->capacity + 1] != CANARY)
+            stack->errorCode |= deadSecondCanary;
+    #endif
+
     return stack->errorCode;
 }
 
 void stackDump (stack_t* stack, FILE* file, struct info dumpInfo) {
-    assert(stack);
+    assert(file);
 
     fprintf(file, "stackDump() from %s at %s:%d\n", dumpInfo.nameOfFunct, dumpInfo.nameOfFile, dumpInfo.numOfLine);
+
+    if (stackPtrIsNull (stack, stdout))
+        return;
     fprintf(file, "stack <%s> [%p] from %s at %s:%d\n", stack->nameOfType, stack, stack->stackInfo.nameOfFunct, stack->stackInfo.nameOfFile, stack->stackInfo.numOfLine);
 
     fprintfErrorForDump(stack, file);
@@ -158,7 +250,10 @@ void stackDump (stack_t* stack, FILE* file, struct info dumpInfo) {
 
 
 void fprintfErrorForDump (stack_t* stack, FILE* file) {
-    assert(stack);
+    assert(file);
+
+    if (stackPtrIsNull (stack, stdout))
+        return;
     assert(file);
 
     if (stack->errorCode & badStackPtr)
@@ -179,10 +274,16 @@ void fprintfErrorForDump (stack_t* stack, FILE* file) {
     if (stack->errorCode & badRealloc)
         fprintf(file, "_______________________ERROR! REALLOC DID NOT WORK CORRECTLY!(%d)\n", badRealloc);
 
+    if (stack->errorCode & noElementsForPop)
+        fprintf(file, "_______________________ERROR! STACK HAS NO ELEMENTS FOR POP!(%d)\n", noElementsForPop);
 }
 
 int stackDtor (stack_t* stack, FILE* file, struct info* dumpInfo) {
-    assert(stack);
+    assert(file);
+    assert(dumpInfo);
+
+    if (stackPtrIsNull (stack, stdout))
+        return badStackPtr;
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
     free(stack->data);
@@ -204,6 +305,20 @@ void fprintfStackData (FILE* file, stack_t stack) {
             fprintfElement(file, (stack.data)[elementNum]);
         }
     }
+}
+
+int stackPtrIsNull (stack_t* stack, FILE* file) {
+    assert(file);
+
+    if (stack == NULL) {
+        printf("ERROR STACK POINTER IS NULL:\n");
+        fprintf(file, "ERROR STACK POINTER IS NULL:\n");
+        //errno = EINVDAT;
+        //perror("");
+        return badStackPtr;
+    }
+
+    return 0;
 }
 
 
