@@ -14,6 +14,8 @@ enum stackErr_t {
     noElementsForPop = 0b1000000,
     deadFirstCanary = 0b10000000,
     deadSecondCanary = 0b100000000,
+    divisionByZero = 0b1000000000,
+    badSqrt = 0b10000000000,
 };
 
 struct info {

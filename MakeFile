@@ -4,8 +4,10 @@ main.o: main.cpp
 	g++ $(CFLAGS) -c main.cpp
 stackFunctions.o: stackFunctions.cpp
 	g++ $(CFLAGS) -c stackFunctions.cpp
-Stack.exe: main.o stackFunctions.o
-	g++ $(CFLAGS) main.o stackFunctions.o -o Stack
+calcFunctions.o: calcFunctions.cpp
+	g++ $(CFLAGS) -c calcFunctions.cpp
+Stack.exe: main.o stackFunctions.o calcFunctions.o
+	g++ $(CFLAGS) main.o stackFunctions.o calcFunctions.o -o Stack
 clean:
-	rm main.o stackFunctions.o
+	rm main.o stackFunctions.o calcFunctions.o
 build: Stack.exe

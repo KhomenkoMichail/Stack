@@ -3,6 +3,7 @@
 
 #include "structsAndEnums.h"
 #include "stackFunctions.h"
+#include "calcFunctions.h"
 
 int main(void) {
     struct stack stk = {};
@@ -11,14 +12,9 @@ int main(void) {
 
     FILE* logFile = fopen("writeDump.log", "w");
 
-    int x = 0;
+    STACK_CTOR(stk, stackInfo, 1);
 
-    STACK_CTOR(stk, stackInfo, 2);
-    STACK_PUSH(&stk, 10, logFile, &dumpInfo);
-
-    STACK_POP(&stk, &x, logFile, &dumpInfo);
-
-    printf("x = %d\n", x);
+    readCommands(&stk, logFile, &dumpInfo);
 
     return 0;
 }

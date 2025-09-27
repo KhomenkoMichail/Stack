@@ -26,7 +26,7 @@
     (dumpInfoAddress)->nameOfFile = __FILE__; \
     (dumpInfoAddress)->numOfLine = __LINE__;\
     if (stackPush(stackAddress, value, filePtr, dumpInfoAddress))\
-        return 1;\
+        return (stackAddress)->errorCode;\
 
 #define STACK_POP(stackAddress, ptrToVariable, filePtr, dumpInfoAddress)\
     assert(filePtr);\
@@ -34,7 +34,7 @@
     (dumpInfoAddress)->nameOfFile = __FILE__; \
     (dumpInfoAddress)->numOfLine = __LINE__;\
     if (stackPop(stackAddress, ptrToVariable, filePtr, dumpInfoAddress))\
-        return 1;\
+        return (stackAddress)->errorCode;\
 
 int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct info stackCreationInfo);
 
