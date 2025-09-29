@@ -3,6 +3,9 @@
 
 typedef int stackElement_t;
 
+#define CANARY_PROTECTION
+#define HASH_PROTECTION
+
 enum stackErr_t {
     noErrors = 0b0,
     badStackPtr= 0b1,
@@ -16,6 +19,7 @@ enum stackErr_t {
     deadSecondCanary = 0b100000000,
     divisionByZero = 0b1000000000,
     badSqrt = 0b10000000000,
+    incorrectHash = 0b100000000000,
 };
 
 struct info {
@@ -31,6 +35,9 @@ struct stack {
     const char* nameOfType;
     const char* nameOfStack;
     int errorCode;
+    #ifdef HASH_PROTECTION
+        unsigned long long hash;
+    #endif
     struct info stackInfo;
 };
 

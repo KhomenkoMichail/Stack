@@ -2,7 +2,7 @@
 #define STACK_FUNCTIONS_H
 
 #include "structsAndEnums.h"
-#include "assert.h"
+#include <assert.h>
 
 #define STACK_CTOR(stackName, stackInfoName, capacity)\
     stackInfoName.nameOfFile = __FILE__;\
@@ -55,5 +55,7 @@ void fprintfStackData (FILE* file, stack_t stack);
 int stackDtor (stack_t* stack, FILE* file, struct info* dumpInfo);
 
 int stackPtrIsNull (stack_t* stack, FILE* file);
+
+unsigned long long djb2Hash (stack_t* stack);
 
 #endif

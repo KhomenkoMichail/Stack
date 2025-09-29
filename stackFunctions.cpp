@@ -9,8 +9,6 @@
 #include "stackFunctions.h"
 #include "structsAndEnums.h"
 
-#define CANARY_PROTECTION
-
 const stackElement_t POISON = 0xBADBABE;
 const int MAX_CAPACITY = 100000000;
 
@@ -49,6 +47,10 @@ int stackCtor (stack_t* stack, ssize_t capacity, const char* nameOfStack, struct
         stack->data = (stackElement_t*)calloc(capacity, sizeof(stackElement_t));
         for(ssize_t numOfElement = 0; numOfElement < capacity; numOfElement++)
             stack->data[numOfElement] = POISON;
+    #endif
+
+    #ifdef HASH_PROTECTION
+        stack->hash = djb2Hash(stack);
     #endif
 
     return stack->errorCode;
@@ -99,6 +101,9 @@ int stackPush (stack_t* stack, stackElement_t value, FILE* file, struct info* du
         }
     #endif
 
+    #ifdef HASH_PROTECTION
+        stack->hash = djb2Hash(stack);
+    #endif
 
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
@@ -172,6 +177,10 @@ int stackPop (stack_t* stack, stackElement_t* ptrToVariable, FILE* file, struct 
         stack->data[stack->size + 1] = POISON;
     #endif
 
+    #ifdef HASH_PROTECTION
+        stack->hash = djb2Hash(stack);
+    #endif
+
     STACK_ERRORS_CHECK(stack, file, dumpInfo);
 
     return stack->errorCode;
@@ -196,6 +205,11 @@ int stackVerifier (stack_t* stack) {
 
         if (stack->data[stack->capacity + 1] != CANARY)
             stack->errorCode |= deadSecondCanary;
+    #endif
+
+    #ifdef HASH_PROTECTION
+        if (stack->hash != djb2Hash(stack))
+            stack->errorCode |= incorrectHash;
     #endif
 
     return stack->errorCode;
@@ -272,6 +286,11 @@ void fprintfErrorForDump (stack_t* stack, FILE* file) {
         if (stack->errorCode & deadSecondCanary)
             fprintf(file, "_______________________ERROR! RIGHT CANARY PROTECTION WAS BROKEN!(%d)\n", deadSecondCanary);
     #endif
+
+    #ifdef HASH_PROTECTION
+        if (stack->errorCode & incorrectHash)
+            fprintf(file, "_______________________ERROR! INCORRECT HASH!(%d)\n", incorrectHash);
+    #endif
 }
 
 int stackDtor (stack_t* stack, FILE* file, struct info* dumpInfo) {
@@ -336,6 +355,30 @@ int stackPtrIsNull (stack_t* stack, FILE* file) {
 
     return 0;
 }
+
+#ifdef HASH_PROTECTION
+
+unsigned long long djb2Hash (stack_t* stack) {
+    if (stackPtrIsNull (stack, stdout))
+        return 0;
+
+    unsigned long long hash = 5381;
+
+    #ifndef CANARY_PROTECTION
+        for(ssize_t numOfElement = 0; numOfElement < stack->capacity; numOfElement++)
+            hash = ((hash << 5) + hash) + stack->data[numOfElement];
+    #endif
+
+    #ifdef CANARY_PROTECTION
+        for(ssize_t numOfElement = 0; numOfElement < stack->capacity + 2; numOfElement++)
+            hash = ((hash << 5) + hash) + stack->data[numOfElement];
+    #endif
+
+    return hash;
+}
+
+#endif
+
 
 
 
